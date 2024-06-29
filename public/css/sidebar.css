@@ -1,0 +1,222 @@
+.wrapper {
+    width: 100%;
+}
+
+#sidebar {
+    min-width: 280px;
+    max-width: 320px;
+    /*background: #3e64ff;*/
+    background-color: white;
+    -webkit-transition: all 0.3s;
+    -o-transition: all 0.3s;
+    transition: all 0.3s;
+}
+
+#sidebar.active {
+    min-width: 80px;
+    max-width: 80px;
+    text-align: center;
+}
+
+#sidebar.active ul.components li {
+    font-size: 14px;
+}
+
+#sidebar.active ul.components li a {
+    padding: 10px 0;
+}
+
+#sidebar.active ul.components li a span {
+    margin-right: 0;
+    display: block;
+    font-size: 24px;
+}
+
+#sidebar.active .logo {
+    padding: 10px 0;
+}
+
+#sidebar.active .footer {
+    display: none;
+}
+
+#sidebar .logo {
+    display: block;
+    /*color: #fff;*/
+    font-weight: 900;
+    padding: 10px 30px;
+    -webkit-transition: 0.3s;
+    -o-transition: 0.3s;
+    transition: 0.3s;
+}
+
+#sidebar .sub-menu {
+    padding-left: 20px;
+    list-style: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    #sidebar .logo {
+        -webkit-transition: none;
+        -o-transition: none;
+        transition: none;
+    }
+}
+
+#sidebar ul.components {
+    padding: 0;
+    -webkit-transition: 0.3s;
+    -o-transition: 0.3s;
+    transition: 0.3s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    #sidebar ul.components {
+        -webkit-transition: none;
+        -o-transition: none;
+        transition: none;
+    }
+}
+
+#sidebar ul li {
+    font-size: 16px;
+}
+
+#sidebar ul li > ul {
+    margin-left: 10px;
+}
+
+#sidebar ul li > ul li {
+    font-size: 14px;
+}
+
+#sidebar ul li a label {
+    cursor: pointer;
+}
+#sidebar ul li a {
+    margin: 10px;
+    padding: 10px 10px;
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    text-decoration: none;
+    color: var(--secondaryColor2);
+    /*border-radius: 10px;*/
+    /*border-bottom: 1px solid rgba(255, 255, 255, 0.1); */
+}
+
+#sidebar ul li a span {
+    margin-right: 15px;
+}
+
+.image-sidebar {
+    display: block;
+}
+@media (max-width: 991.98px) {
+    #sidebar ul li a span {
+        display: block;
+    }
+    .image-sidebar {
+        display: none;
+    }
+}
+
+#sidebar ul li a:hover {
+    text-decoration: none;
+    /*border-color: #00B2FF;*/
+    border-right: 5px solid var(--secondaryColor);
+    color: var(--secondaryColor) !important;
+    /*color: var(--blueColor); */
+}
+
+#sidebar ul li.active > a {
+    border-right: 5px solid var(--secondaryColor);
+    color: var(--secondaryColor) !important;
+    /*border-radius: 0px 200px 200px 0px;*/
+    /*color: var(--blueColor);*/
+}
+
+#sidebar li a .notshow,
+#sidebar .list-group-item .c,
+#sidebar.active ul.components li a .notshow {
+    display: none;
+}
+
+#sidebar .list-group-item {
+    padding: 10px 30px;
+}
+
+#sidebar .hide {
+    padding: 0 !important;
+    height: 0 !important;
+}
+
+#sidebar .list-group-item .notshow {
+    display: none;
+}
+
+@media (max-width: 991.98px) {
+    #sidebar {
+        min-width: 80px;
+        max-width: 80px;
+        text-align: center;
+        margin-left: -80px !important;
+    }
+
+    #sidebar.active {
+        margin-left: 0 !important;
+    }
+}
+
+#content {
+    width: 100%;
+    padding: 0;
+    /*min-height: 100vh;*/
+    -webkit-transition: all 0.3s;
+    -o-transition: all 0.3s;
+    transition: all 0.3s;
+}
+
+@media (max-width: 991.98px) {
+
+    #sidebarCollapse span {
+        display: none;
+    }
+
+    /*#sidebar li a {*/
+    /*    font-size: 1.75rem;*/
+    /*    margin-bottom: .5rem;*/
+    /*    font-weight: 500;*/
+    /*    line-height: 1.2;*/
+    /*}*/
+    /*#sidebar .list-group-item small,*/
+    /*#sidebar li a span,*/
+    /*#sidebar li a label {*/
+    /*    display: none;*/
+    /*}*/
+    /*#sidebar .list-group-item {*/
+    /*    padding: 0 !important;*/
+    /*    height: 0 !important;*/
+    /*}*/
+
+}
+
+#sidebar li a label {
+    margin-bottom: 0 !important;
+}
+
+ul :not(collapsed) .arrow:before,
+li :not(collapsed) .arrow:before {
+    font-family: "Material Design Icons";
+    content: "\F0140";
+    display: inline-block;
+    padding-left: 10px;
+    padding-right: 10px;
+    vertical-align: middle;
+    float: right;
+}
+
+.-mt-5 {
+    margin-top: -10rem !important;
+}
+
