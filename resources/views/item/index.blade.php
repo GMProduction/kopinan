@@ -86,12 +86,33 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="modalImg" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Foto Item</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div>
+                    <div class="modal-body">
+                        <div class=" d-flex justify-content-center" style="height: 200px">
+                            <img id="imgItem" style="object-fit: contain" src="">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn-danger  btn-sm" data-bs-dismiss="modal" aria-label="Close">Tutup</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @section('morejs')
     <script>
         var myModal = new bootstrap.Modal(document.getElementById("modal"), {});
         var myModalCategory = new bootstrap.Modal(document.getElementById("modalCategory"), {});
+        var myModalImg = new bootstrap.Modal(document.getElementById("modalImg"), {});
 
         $(document).on('click', '#addData, #editData', function () {
             // $('#modal').modal('show')
@@ -135,8 +156,8 @@
                 {
                     data: 'image', name: 'image',
                     render:(e) => {
-                        return "<div>" +
-                            "<img alt='' src='"+e+"' />" +
+                        return "<div data-img='"+e+"' onclick='showImg(this)'>" +
+                            "<img alt='' src='"+e+"'  />" +
                             "</div>"
                     }
                 },
@@ -199,5 +220,11 @@
             postdeleteData(name, '{{route('item.delete')}}', data, aftersave);
             return false
         })
+
+        function showImg(a) {
+            console.log($(a).data('img'))
+            $('#modalImg #imgItem').attr('src',$(a).data('img'))
+            myModalImg.show();
+        }
     </script>
 @endsection

@@ -86,8 +86,8 @@
                                 <label class="m-0">Transaksi</label>
                             </a>
                         </li>
-                        <li id="dashboard" class="data-hover dashboard" title="Dashboard">
-                            <a href="">
+                        <li id="report" class="data-hover report" title="report">
+                            <a href="{{route('report')}}">
                                 <i class="material-icons menu-icon ">receipt_long</i>
                                 <label class="m-0">Laporan</label>
                             </a>

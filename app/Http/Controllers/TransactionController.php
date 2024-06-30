@@ -32,6 +32,32 @@ class TransactionController extends Controller
         return view('transaction.detail', ['data' => $data]);
     }
 
+    public function updateStatus(){
+        $id = request('id');
+        $stat = request('status');
+        $type = request('type');
 
+        try {
+            $trans = Transaction::find($id);
+            if ($type == 'status_pembayaran' && $stat == 2){
+                if (file_exists('../public'.$trans->image_payment)) {
+                    unlink('../public'.$trans->image_payment);
+                }
+                $trans->update([
+                    'image_payment' => null
+                ]);
+            }
+
+            $trans->update([
+                $type => $stat
+            ]);
+            return response()->json([
+                'payload' => [],
+                'message' => 'success',
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
+    }
 
 }

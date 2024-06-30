@@ -17,30 +17,38 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::match(['POST', 'GET'], '', [\App\Http\Controllers\AuthController::class,'index'])->name('login')->middleware('guest');
-Route::get('/logout', [\App\Http\Controllers\AuthController::class, 'logout'])->name('logout');
 
-
-Route::prefix('user')->group(function (){
-    Route::match(['POST','GET'],'', [\App\Http\Controllers\UserController::class,'index'])->name('user');
-    Route::get('datatable', [\App\Http\Controllers\UserController::class,'datatable'])->name('user.datatable');
-});
-
-Route::prefix('item')->group(function (){
-    Route::match(['POST','GET'],'', [\App\Http\Controllers\ItemController::class,'index'])->name('item');
-    Route::get('datatable', [\App\Http\Controllers\ItemController::class,'datatable'])->name('item.datatable');
-    Route::post('delete', [\App\Http\Controllers\ItemController::class,'delete'])->name('item.delete');
-});
-
-Route::prefix('category')->group(function (){
-    Route::get('json', [\App\Http\Controllers\CategoryController::class,'json'])->name('category.json');
-    Route::post('', [\App\Http\Controllers\CategoryController::class,'postData'])->name('category');
-});
-
-Route::prefix('transaction')->group(function (){
-    Route::get('', [\App\Http\Controllers\TransactionController::class,'index'])->name('transaction');
-    Route::get('datatable', [\App\Http\Controllers\TransactionController::class,'datatable'])->name('transaction.datatable');
-    Route::prefix('{id}')->group(function (){
-        Route::get('', [\App\Http\Controllers\TransactionController::class,'detail'])->name('transaction.detail');
-        Route::get('datatable', [\App\Http\Controllers\TransactionController::class,'datatableCart'])->name('transaction.detail.datatable');
+Route::middleware('auth')->group(function (){
+    Route::get('/logout', [\App\Http\Controllers\AuthController::class, 'logout'])->name('logout');
+    Route::prefix('user')->group(function (){
+        Route::match(['POST','GET'],'', [\App\Http\Controllers\UserController::class,'index'])->name('user');
+        Route::get('datatable', [\App\Http\Controllers\UserController::class,'datatable'])->name('user.datatable');
     });
+
+    Route::prefix('item')->group(function (){
+        Route::match(['POST','GET'],'', [\App\Http\Controllers\ItemController::class,'index'])->name('item');
+        Route::get('datatable', [\App\Http\Controllers\ItemController::class,'datatable'])->name('item.datatable');
+        Route::post('delete', [\App\Http\Controllers\ItemController::class,'delete'])->name('item.delete');
+    });
+
+    Route::prefix('category')->group(function (){
+        Route::get('json', [\App\Http\Controllers\CategoryController::class,'json'])->name('category.json');
+        Route::post('', [\App\Http\Controllers\CategoryController::class,'postData'])->name('category');
+    });
+
+    Route::prefix('transaction')->group(function (){
+        Route::get('', [\App\Http\Controllers\TransactionController::class,'index'])->name('transaction');
+        Route::post('confirm', [\App\Http\Controllers\TransactionController::class,'updateStatus'])->name('transaction.confirm');
+        Route::get('datatable', [\App\Http\Controllers\TransactionController::class,'datatable'])->name('transaction.datatable');
+        Route::prefix('{id}')->group(function (){
+            Route::get('', [\App\Http\Controllers\TransactionController::class,'detail'])->name('transaction.detail');
+            Route::get('datatable', [\App\Http\Controllers\TransactionController::class,'datatableCart'])->name('transaction.detail.datatable');
+        });
+    });
+
+    Route::prefix('report')->group(function (){
+        Route::get('', [\App\Http\Controllers\ReportController::class,'index'])->name('report');
+        Route::get('datatable', [\App\Http\Controllers\ReportController::class,'datatable'])->name('report.datatable');
+    });
+
 });

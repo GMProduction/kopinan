@@ -10,14 +10,16 @@ class Transaction extends Model
     use HasFactory;
 
     protected $fillable = [
-      'user_id',
-      'transaction_number',
-      'total_price',
-      'status_pesanan',
-      'status_pembayaran',
+        'user_id',
+        'transaction_number',
+        'total_price',
+        'status_pesanan',
+        'status_pembayaran',
+        'image_payment',
     ];
 
-    public function user(){
-        return $this->belongsTo(User::class,'user_id');
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
     }
 }

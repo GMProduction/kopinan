@@ -95,7 +95,9 @@ async function saveData(title, form, url, resposeSuccess, image = null) {
 }
 
 function saveDataObjectFormData(title, form, url, resposeSuccess, method = 'POST') {
-    const form_data = $('#'+form).serialize();
+    console.log('formform',typeof form)
+    let form_data = $('#'+form).serialize();
+    console.log('form',form_data)
 
     alertify.confirm('', function () {
         $.ajax({
@@ -180,6 +182,90 @@ function saveDataObjectFormData(title, form, url, resposeSuccess, method = 'POST
     return false;
 }
 
+function saveDataAjax(title, form_data,  url, resposeSuccess,form = '', method = 'POST') {
+
+    alertify.confirm('', function () {
+        $.ajax({
+            type: method,
+            data: form_data,
+            url: url ?? window.location.pathname,
+            async: true,
+            // processData: false,
+            // contentType: false,
+            headers: {
+                'Accept': "application/json"
+            },
+            success: function (data, textStatus, xhr) {
+
+                if (xhr.status === 200) {
+                    swal(data?.msg ?? "Berhasil", {
+                        icon: "success",
+                        buttons: false,
+                        timer: 1500
+                    }).then((dat) => {
+                        if (resposeSuccess) {
+                            resposeSuccess(data)
+                        } else {
+                            window.location.reload()
+                        }
+                    });
+                } else {
+                    swal(data['msg'])
+                }
+                $('#'+form+' button').removeAttr('disabled')
+
+            },
+            xhr: function () {
+                $('#'+form).append(' <div id="progressbar" class="progress mt-2">\n' +
+                    '                                <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>\n' +
+                    '                            </div>')
+                $('#'+form+' button').attr('disabled', '')
+                var xhr = new window.XMLHttpRequest();
+                xhr.upload.addEventListener("progress", function (evt) {
+                    if (evt.lengthComputable) {
+                        var percentComplete = (evt.loaded / evt.total) * 100;
+                        //Do something with upload progress here
+                        console.log(evt.loaded)
+                        console.log(evt.total)
+                        console.log(percentComplete)
+                        $('#progressbar div').attr('style', "width:" + percentComplete + '%').html(parseInt(percentComplete) + '%')
+                        if (percentComplete === 100) {
+                            console.log('close loadning 100')
+                            $('#loading').modal('hide')
+                            $('#progressbar div').addClass('bg-success')
+                        }
+                    }
+                }, false);
+                return xhr;
+            },
+            complete: function (xhr, textStatus) {
+                $('#progressbar').remove();
+                // $('#form button').removeAttr('disabled')
+
+            },
+            error: function (error, xhr, textStatus) {
+                $('#'+form+' button').removeAttr('disabled')
+                $('#progressbar').remove();
+                // console.log("LOG ERROR", error.responseJSON.errors);
+                // console.log("LOG ERROR", error.responseJSON.errors[Object.keys(error.responseJSON.errors)[0]][0]);
+                console.log(xhr.status);
+                console.log(textStatus);
+                console.log(error.responseJSON);
+                swal(JSON.parse(error.responseText).errors ? JSON.parse(error.responseText).errors[Object.keys(JSON.parse(error.responseText).errors)[0]][0] : JSON.parse(error.responseText)?.message ? JSON.parse(error.responseText).message : error.responseJSON?.msg ?? textStatus)
+
+                // swal(error.responseJSON.errors ? error.responseJSON.errors[Object.keys(error.responseJSON.errors)[0]][0] : error.responseJSON['message'] ? error.responseJSON['message'] : error.responseJSON['msg'] )
+
+            }
+        })
+    }, function () {
+
+    }).setHeader(title).setContent('<div id="confirmDialog" class="w-full d-flex flex-column align-items-center"><p>Apakah Anda Yakin ' + title + ' ?</p></div>').set('movable', false).set('defaultFocusOff', false).set('labels', {
+        cancel: 'Batalkan',
+        ok: 'Simpan',
+    }).set('reverseButtons', true).show();
+
+    return false;
+}
 
 
 function saveDataObjectFormDataOver(title, form_data,form, url, resposeSuccess, method = 'POST') {
@@ -540,7 +626,7 @@ function alerty() {
 }
 
 function postdeleteData(text, url, data, resposeSuccess) {
-
+    console.log('asdasd', data)
     alertify.confirm('', function () {
         $.ajax({
             type: "POST",
