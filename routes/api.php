@@ -14,4 +14,26 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/', function () {
+    return response()->json([
+        'app_name' => 'masa_muda_coffe_app',
+        'app_version' => 'v1.0'
+    ], 200);
+});
+
+Route::post('/register', [\App\Http\Controllers\API\AuthController::class, 'register']);
 Route::post('/login', [\App\Http\Controllers\API\AuthController::class, 'login']);
+
+Route::group(['middleware' => ['jwt.verify']], function () {
+
+    Route::group(['prefix' => 'category'], function () {
+        Route::get('/', [\App\Http\Controllers\API\CategoryController::class, 'index']);
+        Route::get('/{id}', [\App\Http\Controllers\API\CategoryController::class, 'findByID']);
+    });
+
+    Route::group(['prefix' => 'item'], function () {
+        Route::get('/', [\App\Http\Controllers\API\ItemController::class, 'index']);
+        Route::get('/{id}', [\App\Http\Controllers\API\ItemController::class, 'findByID']);
+    });
+});
+

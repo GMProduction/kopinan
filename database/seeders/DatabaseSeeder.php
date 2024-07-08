@@ -33,5 +33,9 @@ class DatabaseSeeder extends Seeder
         foreach ($data as $value) {
             User::create($value);
         }
+
+        $this->call([
+            CategorySeeder::class
+        ]);
     }
 }
