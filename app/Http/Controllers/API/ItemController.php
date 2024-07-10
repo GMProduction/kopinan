@@ -17,8 +17,12 @@ class ItemController extends CustomController
     public function index()
     {
         try {
-            $items = Item::with(['category'])
-                ->get();
+            $priceType = $this->field('price_type');
+            $query = Item::with(['category']);
+            if ($priceType) {
+                $query->where('price_point', '>', 0);
+            }
+            $items = $query->get();
             return $this->jsonSuccessResponse('success', $items);
         } catch (\Exception $e) {
             return $this->jsonErrorResponse($e->getMessage());
@@ -31,6 +35,18 @@ class ItemController extends CustomController
             $item = Item::with(['category'])
                 ->where('id', '=', $id)
                 ->first();
+            return $this->jsonSuccessResponse('success', $item);
+        } catch (\Exception $e) {
+            return $this->jsonErrorResponse($e->getMessage());
+        }
+    }
+
+    public function findByCategoryID($id)
+    {
+        try {
+            $item = Item::with(['category'])
+                ->where('category_id', '=', $id)
+                ->get();
             return $this->jsonSuccessResponse('success', $item);
         } catch (\Exception $e) {
             return $this->jsonErrorResponse($e->getMessage());

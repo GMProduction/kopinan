@@ -17,6 +17,11 @@ class Cart extends Model
       'price',
       'qty',
       'sub_total',
+      'is_point',
+    ];
+
+    protected $casts = [
+        'is_point' => 'boolean'
     ];
 
     public function item(){

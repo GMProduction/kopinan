@@ -16,6 +16,7 @@ class Item extends Model
         'name',
         'image',
         'price',
+        'price_point'
     ];
 
     protected $with = 'category';

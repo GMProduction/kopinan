@@ -34,6 +34,11 @@ Route::group(['middleware' => ['jwt.verify']], function () {
     Route::group(['prefix' => 'item'], function () {
         Route::get('/', [\App\Http\Controllers\API\ItemController::class, 'index']);
         Route::get('/{id}', [\App\Http\Controllers\API\ItemController::class, 'findByID']);
+        Route::get('/{id}/category', [\App\Http\Controllers\API\ItemController::class, 'findByCategoryID']);
+    });
+
+    Route::group(['prefix' => 'cart'], function () {
+        Route::match(['post', 'get'],'/', [\App\Http\Controllers\API\CartController::class, 'index']);
     });
 });
 
