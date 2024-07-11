@@ -7,6 +7,8 @@ namespace App\Http\Controllers\API;
 use App\Helper\CustomController;
 use App\Models\Cart;
 use App\Models\Item;
+use App\Models\Transaction;
+use Illuminate\Support\Facades\DB;
 
 class CartController extends CustomController
 {
@@ -68,6 +70,61 @@ class CartController extends CustomController
             Cart::create($data_request);
             return $this->jsonSuccessResponse('success');
         } catch (\Exception $e) {
+            return $this->jsonErrorResponse($e->getMessage());
+        }
+    }
+
+    public function deleteCart($id)
+    {
+        try {
+            $userID = auth()->id();
+            $cart = Cart::with([])
+                ->whereNull('transaction_id')
+                ->where('user_id', '=', $userID)
+                ->where('id', '=', $id)
+                ->first();
+
+            if (!$cart) {
+                return $this->jsonNotFoundResponse('cart not found...');
+            }
+            $cart->delete();
+            return $this->jsonSuccessResponse('success');
+        } catch (\Exception $e) {
+            return $this->jsonErrorResponse($e->getMessage());
+        }
+    }
+
+    public function checkout()
+    {
+        try {
+            DB::beginTransaction();
+            $userID = auth()->id();
+            $carts = Cart::with([])
+                ->whereNull('transaction_id')
+                ->where('user_id', '=', $userID)
+                ->get();
+
+            $sumPrice = $carts->where('is_point', '=', false)->sum('sub_total');
+            $sumPoint =$carts->where('is_point', '=', true)->sum('sub_total');
+            $data_transaction = [
+                'user_id' => $userID,
+                'transaction_number' => 'MMP-'.date('YmdHis'),
+                'total_price' => $sumPrice,
+                'total_point' => $sumPoint,
+                'status_pesanan' => 0,
+                'status_pembayaran' => 0,
+                'image_payment' => null
+            ];
+            $transaction = Transaction::create($data_transaction);
+            foreach ($carts as $cart) {
+                $cart->update([
+                    'transaction_id' => $transaction->id
+                ]);
+            }
+            DB::commit();
+            return $this->jsonSuccessResponse('success');
+        }catch (\Exception $e) {
+            DB::rollBack();
             return $this->jsonErrorResponse($e->getMessage());
         }
     }

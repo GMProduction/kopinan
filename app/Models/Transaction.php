@@ -13,6 +13,7 @@ class Transaction extends Model
         'user_id',
         'transaction_number',
         'total_price',
+        'total_point',
         'status_pesanan',
         'status_pembayaran',
         'image_payment',
