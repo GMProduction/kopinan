@@ -15,7 +15,7 @@
                 </div>
                 <div class="col-md-4 d-flex">
                    <button class="btn btn-sm btn-primary2 me-2" type="submit">Cari</button>
-                   <a class="btn btn-sm btn-primary" type="button" onclick="reset()">Reset</a>
+                   <a class="btn btn-sm btn-primary d-flex align-items-center" type="button" onclick="reset()">Reset</a>
                 </div>
             </form>
         </div>
@@ -30,6 +30,7 @@
                 <th>Status Pembayaran</th>
                 <th>No. Telp Customer</th>
                 <th>Total</th>
+                <th>Total Poin</th>
             </tr>
             </thead>
         </table>
@@ -80,7 +81,10 @@
                     render: (e) => {
                         return 'Rp. ' + parseFloat(e).toLocaleString();
                     }
-                },
+                },{
+                    data: 'total_point', name: 'total_point',
+                }
+
             ];
             datatable('table', urlDatatable, colums)
         }

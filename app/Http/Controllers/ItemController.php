@@ -33,12 +33,12 @@ class ItemController extends Controller
     }
 
     public function postData() {
-        $field = request()->validate([
+        request()->validate([
             'category_id' => 'required',
             'name' => 'required',
             'price' => 'required',
         ]);
-
+        $field = request()->all();
         try {
             if (request('image')) {
                 $image     = $this->generateImageName('image');
