@@ -1,9 +1,6 @@
 @extends('base')
 
 @section('content')
-    <div class="d-flex justify-content-end my-3">
-        <button class="btn btn-primary" id="addData">Tambah</button>
-    </div>
     <div class="row">
         <div class="col-md-3 d-flex flex-column">
             <div class="rounded bg-white p-3">
@@ -56,18 +53,20 @@
             </div>
         </div>
         <div class="p-3 rounded bg-white col-md-9 d-flex flex-column justify-content-between">
-            <table id="table" class="display nowrap" style="width:100%">
-                <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Nama menu</th>
-                    <th>Catatan</th>
-                    <th>Harga</th>
-                    <th>Qty</th>
-                    <th>Sub Totalr</th>
-                </tr>
-                </thead>
-            </table>
+           <div class="table-responsive">
+               <table id="table" class="display nowrap" style="width:100%">
+                   <thead>
+                   <tr>
+                       <th>#</th>
+                       <th>Nama menu</th>
+                       <th>Catatan</th>
+                       <th>Harga</th>
+                       <th>Qty</th>
+                       <th>Sub Total</th>
+                   </tr>
+                   </thead>
+               </table>
+           </div>
             <div class="d-flex flex-md-row flex-column justify-content-between ">
                 <div class="d-flex order-md-0 order-2" style="align-items: center">
                     <div class="d-flex" style="align-items: center">
@@ -86,6 +85,8 @@
                     <div class="p-2 border rounded fw-semibold ">
                         <span class="">Total</span>
                         <span>Rp. {{number_format($data->total_price)}}</span>
+                        <span> | </span>
+                        <span>Poin : {{$data->total_point}}</span>
                     </div>
                 </div>
             </div>
@@ -138,13 +139,27 @@
                     data: 'note', name: 'note',
                 },
                 {
-                    data: 'price', name: 'price'
+                    data: 'price', name: 'price',
+                    render:(e,x,d) => {
+                        if (d.is_point){
+                            return e
+                        }else {
+                            return 'Rp. ' + parseFloat(e).toLocaleString();
+                        }
+                    }
                 },
                 {
                     data: 'qty', name: 'qty'
                 },
                 {
-                    data: 'sub_total', name: 'sub_total'
+                    data: 'sub_total', name: 'sub_total',
+                    render:(e,x,d) => {
+                        if (d.is_point){
+                            return e
+                        }else {
+                            return 'Rp. ' + parseFloat(e).toLocaleString();
+                        }
+                    }
                 },
             ];
             datatable('table', '{{route('transaction.detail.datatable',['id' => $data->id])}}', colums)

@@ -13,6 +13,7 @@
                 <th>Nama Menu</th>
                 <th>Gambar</th>
                 <th>Harga</th>
+                <th>Harga Poin</th>
                 <th>Aksi</th>
             </tr>
             </thead>
@@ -32,8 +33,10 @@
                         <div class="w-100">
                             <label for="selectCategory" class="form-label fw-bold">Jenis Menu</label>
                             <div class="d-flex ">
-                                <select id="selectCategory" name="category_id" required style="width: 100%; margin-right: 5px">
-                                </select>
+                               <div style="margin-right: 5px;width: 100%">
+                                   <select id="selectCategory" name="category_id" required style="width: 100%">
+                                   </select>
+                               </div>
                                 <button type="button" class="btn btn-sm btn-primary" id="addDataCategory">+</button>
                             </div>
                         </div>
@@ -45,6 +48,11 @@
                         <div class="w-100">
                             <label for="price" class="form-label fw-bold">Harga</label>
                             <input type="number" class="form-control bg-white" id="price" name="price" required
+                                   value="">
+                        </div>
+                        <div class="w-100">
+                            <label for="price" class="form-label fw-bold">Harga Poin</label>
+                            <input type="number" class="form-control bg-white" id="price_point" name="price_point"
                                    value="">
                         </div>
                         <div class="w-100">
@@ -123,6 +131,7 @@
                 $('#modal #selectCategory').val($(this).data('category')).trigger('change')
             }
             $('#modal #price').val($(this).data('price'))
+            $('#modal #price_point').val($(this).data('price_point'))
             $('#modal #name').val($(this).data('name'))
             $('#modal #image').val('')
             myModal.show();
@@ -162,7 +171,13 @@
                     }
                 },
                 {
-                    data: 'price', name: 'price'
+                    data: 'price', name: 'price',
+                    render:(e) => {
+                        return 'Rp. '+e.toLocaleString()
+                    }
+                },
+                {
+                    data: 'price_point', name: 'price_point'
                 },
                 {
                     className: "text-center",
