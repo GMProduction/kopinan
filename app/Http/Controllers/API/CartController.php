@@ -105,10 +105,10 @@ class CartController extends CustomController
                 ->get();
 
             $sumPrice = $carts->where('is_point', '=', false)->sum('sub_total');
-            $sumPoint =$carts->where('is_point', '=', true)->sum('sub_total');
+            $sumPoint = $carts->where('is_point', '=', true)->sum('sub_total');
             $data_transaction = [
                 'user_id' => $userID,
-                'transaction_number' => 'MMP-'.date('YmdHis'),
+                'transaction_number' => 'MMP-' . date('YmdHis'),
                 'total_price' => $sumPrice,
                 'total_point' => $sumPoint,
                 'status_pesanan' => 0,
@@ -123,7 +123,7 @@ class CartController extends CustomController
             }
             DB::commit();
             return $this->jsonSuccessResponse('success');
-        }catch (\Exception $e) {
+        } catch (\Exception $e) {
             DB::rollBack();
             return $this->jsonErrorResponse($e->getMessage());
         }

@@ -10,25 +10,27 @@ class Cart extends Model
     use HasFactory;
 
     protected $fillable = [
-      'transaction_id',
-      'item_id',
-      'user_id',
-      'note',
-      'price',
-      'qty',
-      'sub_total',
-      'is_point',
+        'transaction_id',
+        'item_id',
+        'user_id',
+        'note',
+        'price',
+        'qty',
+        'sub_total',
+        'is_point',
     ];
 
     protected $casts = [
         'is_point' => 'boolean'
     ];
 
-    public function item(){
-        return $this->belongsTo(Item::class,'item_id');
+    public function item()
+    {
+        return $this->belongsTo(Item::class, 'item_id');
     }
 
-    public function item_all(){
-        return $this->belongsTo(Item::class,'item_id')->withTrashed();
+    public function item_all()
+    {
+        return $this->belongsTo(Item::class, 'item_id')->withTrashed();
     }
 }

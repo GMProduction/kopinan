@@ -23,7 +23,19 @@ class TransactionController extends CustomController
                 ->orderBy('created_at', 'DESC')
                 ->get();
             return $this->jsonSuccessResponse('success', $data);
-        }catch (\Exception $e) {
+        } catch (\Exception $e) {
+            return $this->jsonErrorResponse($e->getMessage());
+        }
+    }
+
+    public function findByID($id)
+    {
+        try {
+            $Transaction = Transaction::with('cart.item')
+                ->where('id', '=', $id)
+                ->first();
+            return $this->jsonSuccessResponse('success', $Transaction);
+        } catch (\Exception $e) {
             return $this->jsonErrorResponse($e->getMessage());
         }
     }

@@ -63,7 +63,19 @@ class AuthController extends CustomController
 
             User::create($data_request);
             return $this->jsonSuccessResponse('success');
-        }catch (\Exception $e) {
+        } catch (\Exception $e) {
+            return $this->jsonErrorResponse($e->getMessage());
+        }
+    }
+
+    public function getprofile()
+    {
+        try {
+            $data =  User::with([])
+                ->where('id', '=', auth()->id())
+                ->first();
+            return $this->jsonSuccessResponse('success', $data);
+        } catch (\Exception $e) {
             return $this->jsonErrorResponse($e->getMessage());
         }
     }
