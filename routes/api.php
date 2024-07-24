@@ -46,7 +46,7 @@ Route::group(['middleware' => ['jwt.verify']], function () {
     Route::group(['prefix' => 'transaction'], function () {
         Route::get('/', [\App\Http\Controllers\API\TransactionController::class, 'index']);
         Route::get('/{id}', [\App\Http\Controllers\API\TransactionController::class, 'findByID']);
-        Route::post('{id}/upload-proof', [\App\Http\Controllers\API\TransactionController::class, 'uploadProof']);
+        Route::post('/{id}/payment', [\App\Http\Controllers\API\PaymentController::class, 'index']);
     });
 
     Route::group(['prefix' => 'profile'], function () {
