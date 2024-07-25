@@ -60,4 +60,12 @@ class TransactionController extends Controller
         }
     }
 
+    public function checkNoTransaction($id){
+        $trans = Transaction::where('transaction_number',$id)->first();
+        return response()->json([
+            'payload' => $trans,
+            'message' => 'success',
+        ], 200);
+    }
+
 }
