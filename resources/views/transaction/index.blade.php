@@ -3,6 +3,11 @@
 @section('content')
 
     <div class="p-3 rounded bg-white">
+        <div class="w-50 mb-3">
+            <label for="name" class="form-label fw-bold" >Scan QRCode</label>
+            <input type="text"  class="form-control bg-white" id="qrcode"  placeholder="Scan disini ..."
+                   value="">
+        </div>
         <table id="table" class="display nowrap" style="width:100%">
             <thead>
             <tr>
@@ -80,6 +85,36 @@
             datatable('table', '{{route('transaction.datatable')}}', colums)
         }
 
+
+        var input = document.getElementById("qrcode");
+
+        // Execute a function when the user presses a key on the keyboard
+        input.addEventListener("keypress",async function(event) {
+            // If the user presses the "Enter" key on the keyboard
+            if (event.key === "Enter") {
+                // Cancel the default action, if needed
+                event.preventDefault();
+                const value = input.value
+                input.value = ''
+                console.log('var', )
+                // Trigger the button element with a click
+               await $.get('/transaction/'+value+'/check')
+                    .then(a => {
+                       if (a?.payload){
+                           window.location ='/transaction/'+value
+                       }else {
+                           swal("Data transaksi tidak ditemukan", {
+                               icon: "info",
+                               timer: 1000
+                           })
+                       }
+                    })
+                    .catch((e) => {
+                        console.log('sdad',e)
+                    })
+                // document.getElementById("myBtn").click();
+            }
+        });
 
     </script>
 @endsection

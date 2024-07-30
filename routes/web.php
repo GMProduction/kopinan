@@ -43,6 +43,7 @@ Route::middleware('auth')->group(function (){
         Route::prefix('{id}')->group(function (){
             Route::get('', [\App\Http\Controllers\TransactionController::class,'detail'])->name('transaction.detail');
             Route::get('datatable', [\App\Http\Controllers\TransactionController::class,'datatableCart'])->name('transaction.detail.datatable');
+            Route::get('check', [\App\Http\Controllers\TransactionController::class,'checkNoTransaction'])->name('transaction.checkNoTransaction');
         });
     });
 
