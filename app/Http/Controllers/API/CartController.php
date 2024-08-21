@@ -8,6 +8,7 @@ use App\Helper\CustomController;
 use App\Models\Cart;
 use App\Models\Item;
 use App\Models\Transaction;
+use App\Models\User;
 use Illuminate\Support\Facades\DB;
 
 class CartController extends CustomController
@@ -99,6 +100,7 @@ class CartController extends CustomController
         try {
             DB::beginTransaction();
             $userID = auth()->id();
+            $user = User::find($userID);
             $carts = Cart::with([])
                 ->whereNull('transaction_id')
                 ->where('user_id', '=', $userID)
@@ -116,6 +118,11 @@ class CartController extends CustomController
                 'image_payment' => null
             ];
             $transaction = Transaction::create($data_transaction);
+
+            $user->update([
+                'point' => $user->point - $sumPoint
+            ]);
+
             foreach ($carts as $cart) {
                 $cart->update([
                     'transaction_id' => $transaction->id
